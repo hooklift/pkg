@@ -40,12 +40,12 @@ func TestMain(m *testing.M, dbm database.Manager) {
 	}()
 
 	if _, err := sqlx.LoadFile(dbm.Handle(), "./testdata/test-up.sql"); err != nil {
-		glog.Errorf("Error loading SQL testdata: %v", err)
+		glog.Warningf("Error loading SQL testdata: %v", err)
 	}
 
 	defer func() {
 		if _, err := sqlx.LoadFile(dbm.Handle(), "./testdata/test-down.sql"); err != nil {
-			glog.Errorf("Error unloading SQL testdata: %v", err)
+			glog.Warningf("Error unloading SQL testdata: %v", err)
 		}
 	}()
 

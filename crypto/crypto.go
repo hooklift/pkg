@@ -119,4 +119,3 @@ func Decrypt(key, message []byte) ([]byte, bool) {
 	gcm.Open(output[nonceSize:], output[:nonceSize], output[nonceSize:], nil)
 	return output[nonceSize:], true
 }
-
