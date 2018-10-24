@@ -10,11 +10,11 @@ func TestEncription(t *testing.T) {
 	input := []byte("hola mundo")
 	key := NewKey()
 	e, ok := Encrypt(key, input)
-	assert.Cond(t, ok == true, "got: %v, expected: %v", ok, true)
+	assert.Cond(t, ok, "got: %v, expected: %v", ok, true)
 	assert.Cond(t, e != nil, "got: %v, expected: %v", e, nil)
 
 	d, ok := Decrypt(key, e)
-	assert.Cond(t, ok == true, "got: %v, expected: %v", ok, true)
+	assert.Cond(t, ok, "got: %v, expected: %v", ok, true)
 	assert.Equals(t, input, d)
 	assert.Equals(t, string(input[:]), string(d[:]))
 }
@@ -30,4 +30,3 @@ func TestHashPassword(t *testing.T) {
 	h2 := HashPassword(p, salt)
 	assert.Equals(t, h, h2)
 }
-
