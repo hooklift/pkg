@@ -15,7 +15,7 @@ func TestRenderJSON(t *testing.T) {
 		data            interface{}
 		code            int
 		expectedHeaders http.Header
-		expectedBody    []byte
+		expectedBody    string
 	}{
 		{
 			"200 responses with nil body, cacheable",
@@ -25,7 +25,7 @@ func TestRenderJSON(t *testing.T) {
 				"Content-Type":   {"application/json; charset=UTF-8"},
 				"Content-Length": {"5"},
 			},
-			[]byte("\"OK\"\n"),
+			"\"OK\"\n",
 		},
 		{
 			"200 responses with defined body, cacheable",
@@ -35,7 +35,7 @@ func TestRenderJSON(t *testing.T) {
 				"Content-Type":   {"application/json; charset=UTF-8"},
 				"Content-Length": {"15"},
 			},
-			[]byte("{\"blah\":\"foo\"}\n"),
+			"{\"blah\":\"foo\"}\n",
 		},
 		{
 			"400, 500 responses with nil body, no cacheable",
@@ -48,7 +48,7 @@ func TestRenderJSON(t *testing.T) {
 				"Pragma":         {"no-cache"},
 				"Content-Length": {"14"},
 			},
-			[]byte("\"Bad Request\"\n"),
+			"\"Bad Request\"\n",
 		},
 		{
 			"400, 500 responses with defined body, no cacheable",
@@ -61,7 +61,7 @@ func TestRenderJSON(t *testing.T) {
 				"Pragma":         {"no-cache"},
 				"Content-Length": {"15"},
 			},
-			[]byte("{\"blah\":\"foo\"}\n"),
+			"{\"blah\":\"foo\"}\n",
 		},
 	}
 
@@ -85,7 +85,7 @@ func TestRenderJSON(t *testing.T) {
 			data, err := ioutil.ReadAll(res.Body)
 			assert.Ok(t, err)
 			t.Logf("body => %s", data)
-			assert.Equals(t, tt.expectedBody, data)
+			assert.Equals(t, []byte(tt.expectedBody), data)
 		})
 	}
 }
