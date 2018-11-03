@@ -27,6 +27,11 @@ func JSON(w http.ResponseWriter, body interface{}, code int) {
 	if err := json.NewEncoder(w).Encode(body); err != nil {
 		http.Error(w, "failed encoding JSON structure", http.StatusInternalServerError)
 	}
+
+	_, err := w.Write([]byte(""))
+	if err != nil {
+		http.Error(w, "failed flushing response", http.StatusInternalServerError)
+	}
 }
 
 // Unauthorized returns a 401 Unauthorized response with the string representation of the error
