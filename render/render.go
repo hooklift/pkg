@@ -7,12 +7,12 @@ import (
 )
 
 // JSON encodes body and sends it as a JSON document.
-func JSON(w http.ResponseWriter, body interface{}, code int) {
+func JSON(w http.ResponseWriter, body interface{}, code int, cache bool) {
 	headers := w.Header()
 	headers.Set("Content-Type", "application/json; charset=UTF-8")
 
 	// Do not cache errors
-	if code >= 400 {
+	if code >= 400 || !cache {
 		headers.Set("Cache-Control", "no-store")
 		headers.Set("Pragma", "no-cache")
 		headers.Set("Expires", "0")
@@ -26,11 +26,6 @@ func JSON(w http.ResponseWriter, body interface{}, code int) {
 
 	if err := json.NewEncoder(w).Encode(body); err != nil {
 		http.Error(w, "failed encoding JSON structure", http.StatusInternalServerError)
-	}
-
-	_, err := w.Write([]byte(""))
-	if err != nil {
-		http.Error(w, "failed flushing response", http.StatusInternalServerError)
 	}
 }
 
